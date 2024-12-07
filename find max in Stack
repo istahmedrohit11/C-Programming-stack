@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include<stdlib.h>
+struct stack{
+    int size;
+    int top;
+    int *arr;
+}; 
+
+int is_full(struct stack *ptr){
+    if(ptr->top==ptr->size-1){
+        return 1;
+    }
+    return 0;
+}
+
+int is_empty(struct stack *ptr){
+    if(ptr->top==-1){
+        return 1;
+    }
+    return 0;
+}
+
+void push(struct stack *ptr,int val){
+    if(is_full(ptr)){
+        printf("The stack is overflow.cant push %d\n",val);
+    }else{
+        ptr->top++;
+        ptr->arr[ptr->top]=val;
+    }
+}
+int pop(struct stack *ptr){
+    if(is_empty(ptr)){
+        printf("the stack is under flow\n");
+        return -1;
+    }else{
+        int val=ptr->arr[ptr->top];
+        ptr->top--;
+        return val;
+    }
+}
+
+void print_stack(struct stack *ptr){
+    if(is_empty(ptr)){
+        printf("\nStack is Empty");
+    }else{
+        printf("\nStack elements are:\n");
+        int i=0;
+        while(i<=ptr->top){
+            printf("%d\t",ptr->arr[i]);
+            i++;
+        }
+    }
+}
+
+int find_max(struct stack *ptr){
+    int max,i=0;
+    while(i<=ptr->top){
+        if(ptr->arr[i]> max){
+            max=ptr->arr[i];
+        }
+        i++;
+    }
+    return max;
+}
+
+int main() {
+   struct stack *sp=(struct stack*)malloc(sizeof(struct stack));
+   sp->size=10;
+   sp->top=-1;
+   sp->arr=(int*)malloc(sp->size * sizeof(int));
+   push(sp,10);
+   push(sp,20);
+   push(sp,30);
+   push(sp,40);
+   push(sp,50);
+   push(sp,60);
+   push(sp,70);
+    printf("pop %d from the stack",pop(sp));
+    print_stack(sp);
+    printf("\nMax value is :%d",find_max(sp));
+    return 0;
+}
