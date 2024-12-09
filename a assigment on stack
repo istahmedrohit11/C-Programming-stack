@@ -1,0 +1,111 @@
+/*Design a Car Parking System that will keep record of available car in the car parking area. If a new car
+arrives, the program will entry car’s plate number (integer number only, such as Car plate number is 42) in
+the list. The system allows departure of a car by removing the car’s plate number from the list.
+The program should have following functionalities:
+1. Entry car’s plate number at the upper cell of TOP of the list
+2. Remove car’s plate number at the TOP of the list
+3. Display number of available Car in the Car parking area/*
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct stack{
+    int size;
+    int top;
+    int *arr;
+};
+int is_empty(struct stack *ptr){
+    if(ptr->top==-1)
+        return 1;
+    else
+        return 0;
+}
+int is_full(struct stack *ptr){
+    if(ptr->top==ptr->size-1)
+        return 1;
+    else 
+        return 0;
+}
+void push(struct stack *ptr,int plate_number){
+    if(is_full(ptr)){
+        printf("Parking Full!Cannot add car with plate number %d.\n", plate_number);
+    }else{
+        ptr->top++;
+        ptr->arr[ptr->top]=plate_number;
+        printf("Car with plate number %d has been parked.\n",plate_number);
+    }
+}
+int pop(struct stack* ptr){
+    if(is_empty(ptr)){
+        printf("Parking Empty!No cars to remove.\n");
+        return -1;
+    }else{
+        int plate_number=ptr->arr[ptr->top];
+        ptr->top--;
+        printf("Car with plate number %d has left the parking area.\n",plate_number);
+        return plate_number;
+    }
+}
+void display(struct stack *ptr){
+    if (is_empty(ptr)){
+        printf("The parking area is empty.\n");
+    }else{
+        printf("Parked cars (from bottom to top):\n");
+        int i=0;
+        while(i<=ptr->top){
+            printf("%d\t",ptr->arr[i]);
+            i++;
+        }
+        printf("\n");
+    }
+}
+int count_cars(struct stack *ptr){
+    return ptr->top+1;
+}
+
+int main(){
+    struct stack *sp=(struct stack*)malloc(sizeof(struct stack));
+    sp->size=100;
+    sp->top=-1;
+    sp->arr=(int*)malloc(sp->size *sizeof(int));
+    int choice,plate_number;
+    while(1){
+        printf("\n");
+        printf("1 for Push\n");
+        printf("2 for Pop\n");
+        printf("3 for Display\n");
+        printf("4 for number of available Cars\n");
+        printf("5 for Exit");
+        printf("\n--------------------------------\n");
+        printf("Enter your choice:\n");
+        scanf("%d",&choice);
+        switch(choice){
+        case 1:
+            printf("Enter Cars plate number:");
+            scanf("%d",&plate_number);
+            push(sp,plate_number);
+            break;
+        case 2:{
+            int removeNum_plate=pop(sp);
+            if(removeNum_plate!=-1){
+                printf("Popped number plate is :%d\n",removeNum_plate);
+            }
+            break;
+        }
+        case 3:
+            display(sp);
+            break;
+        case 4:
+        printf("Number of available cars: %d",count_cars(sp)); 
+            break;
+        case 5:
+            printf("// Program exit.\n");
+            return 0;
+        default:
+            printf("Wrong choice.Please choice between 1-5.\n");
+        }
+    }
+}
